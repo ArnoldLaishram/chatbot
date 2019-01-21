@@ -1,8 +1,13 @@
 package com.docsapp.chatbot.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Message(
-        val message: String,
-        val type: MessageType) {
+    @SerializedName("message")
+    val message: String,
+    @Transient
+    val type: MessageType? = null
+) {
 
     companion object {
         const val SEND_MESSAGE_TYPE = 1

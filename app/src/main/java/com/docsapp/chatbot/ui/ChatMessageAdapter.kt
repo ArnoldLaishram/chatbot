@@ -1,9 +1,10 @@
-package com.docsapp.chatbot
+package com.docsapp.chatbot.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.docsapp.chatbot.R
 import com.docsapp.chatbot.model.Message
 import com.docsapp.chatbot.model.MessageType
 import kotlinx.android.synthetic.main.item_received.view.*
@@ -16,7 +17,7 @@ class ChatMessageAdapter(
 
     class StaffCardVH(val view: View) : RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatMessageAdapter.StaffCardVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StaffCardVH {
         val view = if (viewType == Message.SEND_MESSAGE_TYPE)
             LayoutInflater.from(parent.context).inflate(R.layout.item_sent, parent, false)
         else
