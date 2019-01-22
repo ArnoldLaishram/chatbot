@@ -2,9 +2,10 @@ package com.docsapp.chatbot
 
 import java.util.concurrent.Executors
 
-object ThreadExecutor {
+const val THREAD_COUNT = 1
 
-    private const val THREAD_COUNT = 1
+class ThreadExecutor {
+
     private val executor = Executors.newFixedThreadPool(THREAD_COUNT)
 
     fun execute(runnable: Runnable) {

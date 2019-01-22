@@ -47,6 +47,11 @@ class ChatActivity : AppCompatActivity(), ChatViewContract.ChatView {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.getMessages()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()

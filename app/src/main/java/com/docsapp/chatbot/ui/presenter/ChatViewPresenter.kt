@@ -17,13 +17,14 @@ class ChatViewPresenter(
 ) : ChatViewContract.ChatPresenter {
 
     private var sendMessageCallBack: Call<Response>? = null
+    private var threadExecutor = ThreadExecutor()
 
     override fun onDestroy() {
         view = null
         if (sendMessageCallBack != null) {
             sendMessageCallBack!!.cancel()
         }
-        ThreadExecutor.stop()
+        threadExecutor.stop()
     }
 
     override fun isViewNotVisible(): Boolean {
@@ -38,12 +39,12 @@ class ChatViewPresenter(
     }
 
     override fun getMessages() {
-        ThreadExecutor.execute(GetMessagesRunnable())
+        threadExecutor.execute(GetMessagesRunnable())
     }
 
     override fun sendMsg(message: String) {
 
-        ThreadExecutor.execute(SendMgsStartedRunnable(message))
+        threadExecutor.execute(SendMgsStartedRunnable(message))
 
         sendMessageCallBack = ChatBotServiceProvider.getService().sendMessage(message)
 
@@ -56,7 +57,7 @@ class ChatViewPresenter(
             override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
                 if (!response.isSuccessful || isViewNotVisible() || sendMessageCallBack?.isCanceled!!) return
                 val msgResponse = response.body() ?: return
-                ThreadExecutor.execute(SendMgsSuccessRunnable(msgResponse.args.message))
+                threadExecutor.execute(SendMgsSuccessRunnable(msgResponse.args.message))
             }
         })
     }
