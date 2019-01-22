@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.docsapp.chatbot.R
-import com.docsapp.chatbot.model.Message
-import com.docsapp.chatbot.model.MessageType
+import com.docsapp.chatbot.data.model.Message
+import com.docsapp.chatbot.data.model.MessageType
 import kotlinx.android.synthetic.main.item_received.view.*
 import kotlinx.android.synthetic.main.item_sent.view.*
 

@@ -1,4 +1,4 @@
-package com.docsapp.chatbot.model
+package com.docsapp.chatbot.data.model
 
 import com.google.gson.annotations.SerializedName
 
