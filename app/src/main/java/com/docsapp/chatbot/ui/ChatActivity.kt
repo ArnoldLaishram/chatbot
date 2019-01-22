@@ -47,6 +47,11 @@ class ChatActivity : AppCompatActivity(), ChatViewContract.ChatView {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+    }
+
     private fun scrollRecyclerToBottom() {
         recycler_message.scrollToPosition(messages.size - 1)
     }

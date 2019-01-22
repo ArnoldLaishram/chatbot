@@ -3,6 +3,7 @@ package com.docsapp.chatbot.ui.presenter
 import android.os.Handler
 import android.util.Log
 import com.docsapp.chatbot.ChatBotServiceProvider
+import com.docsapp.chatbot.ThreadExecutor
 import com.docsapp.chatbot.data.db.ChatBotDatabase
 import com.docsapp.chatbot.data.model.Message
 import com.docsapp.chatbot.data.model.MessageType
@@ -22,6 +23,7 @@ class ChatViewPresenter(
         if (sendMessageCallBack != null) {
             sendMessageCallBack!!.cancel()
         }
+        ThreadExecutor.stop()
     }
 
     override fun isViewNotVisible(): Boolean {
@@ -36,12 +38,12 @@ class ChatViewPresenter(
     }
 
     override fun getMessages() {
-        Thread(GetMessagesRunnable()).start()
+        ThreadExecutor.execute(GetMessagesRunnable())
     }
 
     override fun sendMsg(message: String) {
 
-        Thread(SendMgsStartedRunnable(message)).start()
+        ThreadExecutor.execute(SendMgsStartedRunnable(message))
 
         sendMessageCallBack = ChatBotServiceProvider.getService().sendMessage(message)
 
@@ -54,9 +56,8 @@ class ChatViewPresenter(
             override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
                 if (!response.isSuccessful || isViewNotVisible() || sendMessageCallBack?.isCanceled!!) return
                 val msgResponse = response.body() ?: return
-                Thread(SendMgsSuccessRunnable(msgResponse.args.message)).start()
+                ThreadExecutor.execute(SendMgsSuccessRunnable(msgResponse.args.message))
             }
-
         })
     }
 
@@ -72,7 +73,6 @@ class ChatViewPresenter(
 
     inner class SendMgsSuccessRunnable(val message: String) : Runnable {
         private val handler = Handler()
-
         override fun run() {
             val sendSMS = insertSMS(message, MessageType.Receive)
             handler.post {
@@ -81,10 +81,8 @@ class ChatViewPresenter(
         }
     }
 
-    inner class GetMessagesRunnable() : Runnable {
-
+    inner class GetMessagesRunnable : Runnable {
         private val handler = Handler()
-
         override fun run() {
             val msgList = chatBotDb.chachedMessageDao().getMessages().toMutableList()
             handler.post {
