@@ -11,12 +11,21 @@ class Message(
     var id: Long?,
     @SerializedName("message")
     var message: String,
-    var type: MessageType? = null
+    var type: MessageType? = null,
+    // will be null for received message type
+    var isDelivered: Boolean? = null
 ) {
 
     companion object {
         const val SEND_MESSAGE_TYPE = 1
         const val RECEIVE_MESSAGE_TYPE = 2
+    }
+
+    fun getIndexOfMessage(messages: List<Message>): Int {
+        for(msgIndex in messages.indices) {
+            if(messages[msgIndex].id == this.id) return msgIndex
+        }
+        return -1
     }
 
 }

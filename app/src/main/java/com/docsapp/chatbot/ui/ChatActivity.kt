@@ -94,12 +94,12 @@ class ChatActivity : AppCompatActivity(), ChatViewContract.ChatView, NetworkChan
         scrollRecyclerToBottom()
     }
 
-    override fun onNetworkConnectionChanged(isOnline: Boolean) {
-        if (isOnline) sendUndeliveredMessage()
+    override fun onResendSuccess(message: Message) {
+        chatMessageAdapter.updateMessageToDelivered(message)
     }
 
-    private fun sendUndeliveredMessage() {
-
+    override fun onNetworkConnectionChanged(isOnline: Boolean) {
+        if (isOnline) presenter.resendUnDeliveredMessages()
     }
 
 }

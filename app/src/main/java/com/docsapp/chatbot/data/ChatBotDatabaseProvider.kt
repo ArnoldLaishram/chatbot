@@ -2,6 +2,7 @@ package com.docsapp.chatbot.data
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.docsapp.chatbot.Const
 import com.docsapp.chatbot.data.db.ChatBotDatabase
 
 object ChatBotDatabaseProvider {
@@ -10,7 +11,7 @@ object ChatBotDatabaseProvider {
         return Room.databaseBuilder(
             context,
             ChatBotDatabase::class.java,
-            "chatbot.db"
+            Const.Database.DB_NAME
         ).build()
     }
 }

@@ -30,6 +30,8 @@ class ChatMessageAdapter(
         val message = messages[position]
         when (message.type) {
             MessageType.Send -> {
+                if (message.isDelivered!!) holder.view.img_delivery_status.setImageResource(R.drawable.ic_delivered)
+                else holder.view.img_delivery_status.setImageResource(R.drawable.ic_not_sent)
                 holder.view.txt_message_sent.text = message.message
             }
             MessageType.Receive -> {
@@ -49,6 +51,14 @@ class ChatMessageAdapter(
     fun setMessages(messages: List<Message>) {
         this.messages = messages
         notifyDataSetChanged()
+    }
+
+    fun updateMessageToDelivered(message: Message) {
+        val indexOfMessage = message.getIndexOfMessage(this.messages)
+        // update isDelivered to true
+        this.messages[indexOfMessage].isDelivered = true
+        // update UI for message
+        notifyItemChanged(indexOfMessage)
     }
 
 }

@@ -12,6 +12,8 @@ interface ChatViewContract {
 
         fun sendMsg(message: String)
 
+        fun resendUnDeliveredMessages()
+
     }
 
     interface ChatView : BaseView<ChatPresenter> {
@@ -21,6 +23,8 @@ interface ChatViewContract {
         fun onSendMsgStarted(message: Message)
 
         fun onSendMsgSuccess(message: Message)
+
+        fun onResendSuccess(message: Message)
 
     }
 }
